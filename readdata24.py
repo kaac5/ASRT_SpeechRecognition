@@ -88,6 +88,7 @@ class DataSpeech():
 			filename_symbollist = ''
 		# 读取数据列表，wav文件列表和其对应的符号列表
 		self.dic_wavlist_thchs30,self.list_wavnum_thchs30 = get_wav_list(self.datapath + filename_wavlist_thchs30)
+		a = len(self.dic_wavlist_thchs30)
 		self.dic_wavlist_stcmds,self.list_wavnum_stcmds = get_wav_list(self.datapath + filename_wavlist_stcmds)
 		
 		self.dic_symbollist_thchs30,self.list_symbolnum_thchs30 = get_wav_symbol(self.datapath + filename_symbollist_thchs30)
@@ -104,7 +105,7 @@ class DataSpeech():
 		num_wavlist_stcmds = len(self.dic_wavlist_stcmds)
 		num_symbollist_stcmds = len(self.dic_symbollist_stcmds)
 		if(num_wavlist_thchs30 == num_symbollist_thchs30 and num_wavlist_stcmds == num_symbollist_stcmds):
-			DataNum = num_wavlist_thchs30 + num_wavlist_stcmds
+			DataNum = num_wavlist_thchs30
 		else:
 			DataNum = -1
 		
@@ -122,7 +123,7 @@ class DataSpeech():
 		'''
 		bili = 2
 		if(self.type=='train'):
-			bili = 11
+			bili = 10
 			
 		# 读取一个文件
 		if(n_start % bili == 0):
@@ -195,8 +196,8 @@ class DataSpeech():
 			
 			
 			for i in range(batch_size):
-				ran_num = random.randint(0,self.DataNum - 1) # 获取一个随机数
-				data_input, data_labels = self.GetData(ran_num)  # 通过随机数取一个数据
+				ran_num = random.randint(0,self.DataNum) # 获取一个随机数
+				data_input, data_labels = self.GetData(self.DataNum)  # 通过随机数取一个数据
 				#data_input, data_labels = self.GetData((ran_num + i) % self.DataNum)  # 从随机数开始连续向后取一定数量数据
 				
 				# 关于下面这一行取整除以8 并加8的余数，在实际中如果遇到报错，可尝试只在有余数时+1，没有余数时+0，或者干脆都不加，只留整除
